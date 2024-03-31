@@ -1,1 +1,2 @@
-#Backend of the PTIT Quiz web
+# Backend of the PTIT Quiz web
+Java Spring Boot + MySQL
