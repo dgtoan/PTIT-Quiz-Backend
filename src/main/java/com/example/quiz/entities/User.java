@@ -1,45 +1,51 @@
 package com.example.quiz.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Table(name = "user")
 @Entity
-@Getter
-@Setter
-@ToString
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
+@NoArgsConstructor @Getter @Setter
 public class User {
-/*
-CREATE TABLE `quiz`.`user` (
- `id` INT AUTO_INCREMENT,
- `classId` VARCHAR(20),
- `fullName` VARCHAR(100),
- `email` VARCHAR(50),
- `username` VARCHAR(50),
- `passwordHash` VARCHAR(32),
- `role` VARCHAR(20)
-);
- */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "classId", nullable = false, length = 20)
-    private String classId;
-
-    @Column(name = "fullName", nullable = false, length = 100)
-    private String fullName;
-
-    @Column(name = "email", nullable = false, length = 50)
-    private String email;
-
-    @Column(name = "username", nullable = false, length = 50)
+    @NotBlank
+    @Size(max = 20)
     private String username;
 
-    @Column(name = "passwordHash", nullable = false, length = 100)
-    private String passwordHash;
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
 
-    @Column(name = "role", nullable = false, length = 20)
-    private String role;
+    @NotBlank
+    @Size(max = 120)
+    private String password;
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
 }
