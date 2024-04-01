@@ -1,17 +1,18 @@
 CREATE SCHEMA `quiz` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE `quiz`.`class` (
-	`id` INT AUTO_INCREMENT,
+	`id` VARCHAR(20),
     `name` VARCHAR(20),
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `quiz`.`user` (
  `id` INT AUTO_INCREMENT,
- `classId` INT,
+ `classId` VARCHAR(20),
  `fullName` VARCHAR(100),
  `email` VARCHAR(50),
- `passwordHash` VARCHAR(32),
+ `username` VARCHAR(50),
+ `passwordHash` VARCHAR(100),
  `role` VARCHAR(20),
  PRIMARY KEY (`id`),
  CONSTRAINT `fk_user_class`
@@ -23,7 +24,7 @@ CREATE TABLE `quiz`.`user` (
 
 CREATE TABLE `quiz`.`quiz` (
  `id` INT AUTO_INCREMENT,
- `classId` INT,
+ `classId` VARCHAR(20),
  `title` VARCHAR(75),
  `metaTitle` VARCHAR(100),
  `startsAt` DATETIME,
