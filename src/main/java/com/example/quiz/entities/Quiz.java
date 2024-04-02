@@ -22,9 +22,9 @@ public class Quiz {
     @Size(max = 120)
     private String description;
 
-    private Timestamp startTime;
+    private Timestamp startsAt;
 
-    private Timestamp endTime;
+    private Timestamp endsAt;
 
     @OneToMany(mappedBy = "quiz")
     private Set<QuizQuestion> questions = new HashSet<>();
@@ -38,7 +38,7 @@ public class Quiz {
     public Quiz(String title, String description, Timestamp startTime, Timestamp endTime) {
         this.title = title;
         this.description = description;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startsAt = startTime;
+        this.endsAt = endTime;
     }
 }

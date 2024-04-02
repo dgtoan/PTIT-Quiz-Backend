@@ -30,5 +30,5 @@ public class QuizQuestion {
     private Set<QuestionAnswer> options = new HashSet<>();
 
     @OneToMany(mappedBy = "quizQuestion")
-    private Set<TakeAnswer> answers = new HashSet<>();
+    private Set<QuestionAnswer> answers = new HashSet<>();
 }

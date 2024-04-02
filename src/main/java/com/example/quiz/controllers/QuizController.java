@@ -1,7 +1,6 @@
 package com.example.quiz.controllers;
 
 import com.example.quiz.entities.Quiz;
-import com.example.quiz.payload.responses.QuizResponse;
 import com.example.quiz.services.QuizService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +21,7 @@ public class QuizController {
     public QuizController(QuizService quizService) {
         this.quizService = quizService;
     }
-    @GetMapping("/")
+    @GetMapping("")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     ResponseEntity<List<Quiz>> getAllQuizzes() {
         return ResponseEntity.ok(quizService.getAllQuizzes());
@@ -33,16 +32,4 @@ public class QuizController {
     ResponseEntity<Quiz> getQuizById(Long id) {
         return ResponseEntity.ok(quizService.getQuizById(id));
     }
-
-//    @GetMapping("/mod")
-//    @PreAuthorize("hasRole('MODERATOR')")
-//    public String moderatorAccess() {
-//        return "Moderator Board.";
-//    }
-//
-//    @GetMapping("/admin")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public String adminAccess() {
-//        return "Admin Board.";
-//    }
 }
