@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.example.quiz.entities.ERole;
-import com.example.quiz.entities.Role;
-import com.example.quiz.entities.User;
+import com.example.quiz.models.ERole;
+import com.example.quiz.models.Role;
+import com.example.quiz.models.User;
 import com.example.quiz.payload.requests.LoginRequest;
 import com.example.quiz.payload.requests.SignupRequest;
 import com.example.quiz.payload.responses.JwtResponse;

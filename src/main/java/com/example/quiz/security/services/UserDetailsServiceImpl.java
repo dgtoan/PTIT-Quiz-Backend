@@ -1,6 +1,6 @@
 package com.example.quiz.security.services;
 
-import com.example.quiz.entities.User;
+import com.example.quiz.models.User;
 import com.example.quiz.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
 package com.example.quiz.controllers;
 
-import com.example.quiz.entities.Quiz;
+import com.example.quiz.models.Quiz;
 import com.example.quiz.services.QuizService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

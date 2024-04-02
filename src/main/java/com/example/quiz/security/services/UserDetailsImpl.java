@@ -1,7 +1,7 @@
 package com.example.quiz.security.services;
 
 
-import com.example.quiz.entities.User;
+import com.example.quiz.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

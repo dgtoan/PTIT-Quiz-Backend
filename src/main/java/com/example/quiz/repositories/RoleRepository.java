@@ -1,7 +1,7 @@
 package com.example.quiz.repositories;
 
-import com.example.quiz.entities.ERole;
-import com.example.quiz.entities.Role;
+import com.example.quiz.models.ERole;
+import com.example.quiz.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

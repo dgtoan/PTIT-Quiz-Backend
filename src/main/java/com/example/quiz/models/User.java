@@ -1,4 +1,4 @@
-package com.example.quiz.entities;
+package com.example.quiz.models;
 
 import java.util.HashSet;
 import java.util.Set;

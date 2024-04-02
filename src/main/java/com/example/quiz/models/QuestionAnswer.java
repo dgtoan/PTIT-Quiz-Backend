@@ -1,7 +1,6 @@
-package com.example.quiz.entities;
+package com.example.quiz.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
