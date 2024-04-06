@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "question_answers")
+@Table(name = "QUESTION_ANSWER")
 @NoArgsConstructor @Getter @Setter
 public class QuestionAnswer {
     @Id
@@ -26,10 +26,6 @@ public class QuestionAnswer {
 
     @OneToMany(mappedBy = "questionAnswer")
     private Set<TakeAnswer> userAnswers = new HashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "quiz_id")
-    private Quiz quiz;
 
     public QuestionAnswer(String answer, Boolean isCorrect) {
         this.answer = answer;

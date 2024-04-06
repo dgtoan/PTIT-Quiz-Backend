@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "takes")
+@Table(name = "TAKE")
 @NoArgsConstructor @Getter @Setter
 public class Take {
 

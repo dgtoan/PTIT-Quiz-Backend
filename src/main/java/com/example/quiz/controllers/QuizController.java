@@ -32,4 +32,5 @@ public class QuizController {
     ResponseEntity<Quiz> getQuizById(Long id) {
         return ResponseEntity.ok(quizService.getQuizById(id));
     }
+
 }

@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "quizs")
+@Table(name = "QUIZ")
 @NoArgsConstructor @Getter @Setter
 public class Quiz {
     @Id
@@ -31,9 +31,6 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz")
     private Set<Take> takes = new HashSet<>();
-
-    @OneToMany(mappedBy = "quiz")
-    private Set<QuestionAnswer> answers = new HashSet<>();
 
     public Quiz(String title, String description, Timestamp startTime, Timestamp endTime) {
         this.title = title;

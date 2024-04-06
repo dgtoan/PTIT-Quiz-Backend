@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "ROLE")
 @NoArgsConstructor @Getter @Setter
 public class Role {
     @Id
