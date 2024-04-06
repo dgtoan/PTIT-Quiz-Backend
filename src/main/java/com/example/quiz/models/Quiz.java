@@ -26,16 +26,19 @@ public class Quiz {
 
     private Timestamp endsAt;
 
-    @OneToMany(mappedBy = "quiz")
-    private Set<QuizQuestion> questions = new HashSet<>();
-
-    @OneToMany(mappedBy = "quiz")
-    private Set<Take> takes = new HashSet<>();
-
-    public Quiz(String title, String description, Timestamp startTime, Timestamp endTime) {
+    public Quiz(String title, String description, Timestamp startsAt, Timestamp endsAt) {
         this.title = title;
         this.description = description;
-        this.startsAt = startTime;
-        this.endsAt = endTime;
+        this.startsAt = startsAt;
+        this.endsAt = endsAt;
     }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = "quiz_questions",
+            joinColumns = @JoinColumn(name = "quiz_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id"))
+    private Set<Question> questions = new HashSet<>();
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Take> takes = new HashSet<>();
 }

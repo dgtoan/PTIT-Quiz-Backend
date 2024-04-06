@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "QUESTION_ANSWER")
+@Table(name = "QUESTION_OPTION")
 @NoArgsConstructor @Getter @Setter
-public class QuestionAnswer {
+public class QuestionOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,15 +20,13 @@ public class QuestionAnswer {
 
     private String answer;
 
-    @ManyToOne
-    @JoinColumn(name = "quiz_question_id")
-    private QuizQuestion quizQuestion;
-
-    @OneToMany(mappedBy = "questionAnswer")
-    private Set<TakeAnswer> userAnswers = new HashSet<>();
-
-    public QuestionAnswer(String answer, Boolean isCorrect) {
+    public QuestionOption(String answer, Boolean isCorrect) {
         this.answer = answer;
         this.isCorrect = isCorrect;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "quiz_question_id")
+    private Question question;
+
 }

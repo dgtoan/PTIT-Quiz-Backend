@@ -27,6 +27,6 @@ public class Take {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "take")
+    @OneToMany(mappedBy = "take", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TakeAnswer> answers = new HashSet<>();
 }

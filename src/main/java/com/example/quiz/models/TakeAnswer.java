@@ -18,12 +18,12 @@ public class TakeAnswer {
     private Boolean isCorrect;
 
     @ManyToOne
-    @JoinColumn(name = "quiz_question_id")
-    private QuizQuestion quizQuestion;
+    @JoinColumn(name = "question_id")
+    private Question question;
 
     @ManyToOne
-    @JoinColumn(name = "question_answer_id")
-    private QuestionAnswer questionAnswer;
+    @JoinColumn(name = "question_option_id")
+    private QuestionOption questionOption;
 
     @ManyToOne
     @JoinColumn(name = "take_id")

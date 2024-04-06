@@ -10,9 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "QUIZ_QUESTION")
+@Table(name = "QUESTION")
 @NoArgsConstructor @Getter  @Setter
-public class QuizQuestion {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,13 +22,11 @@ public class QuizQuestion {
 
     private Integer points;
 
-    @ManyToOne
-    @JoinColumn(name = "quiz_id")
-    private Quiz quiz;
+    public Question(String question, Integer points) {
+        this.question = question;
+        this.points = points;
+    }
 
-    @OneToMany(mappedBy = "quizQuestion")
-    private Set<QuestionAnswer> options = new HashSet<>();
-
-    @OneToMany(mappedBy = "quizQuestion")
-    private Set<QuestionAnswer> answers = new HashSet<>();
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<QuestionOption> questionOptions = new HashSet<>();
 }

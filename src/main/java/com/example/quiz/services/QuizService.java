@@ -18,12 +18,27 @@ public class QuizService {
         return quizRepository.findAll();
     }
 
+    public List<Quiz> searchQuizzes(String title) {
+        return quizRepository.findQuizzesByTitleContainingIgnoreCase(title);
+    }
+
+    public Quiz createQuiz(Quiz quiz) {
+        return quizRepository.save(quiz);
+    }
+
     public Quiz getQuizById(Long id) {
         return quizRepository.findById(id).orElse(null);
     }
 
-    public Quiz saveQuiz(Quiz quiz) {
-        return quizRepository.save(quiz);
+    public Quiz updateQuizById(Long id, Quiz quiz) {
+        Quiz existingQuiz = quizRepository.findById(id).orElse(null);
+        if (existingQuiz == null) {
+            return null;
+        }
+        existingQuiz.setTitle(quiz.getTitle());
+        existingQuiz.setDescription(quiz.getDescription());
+        existingQuiz.setQuestions(quiz.getQuestions());
+        return quizRepository.save(existingQuiz);
     }
 
     public void deleteQuiz(Long id) {
