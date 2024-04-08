@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
-    List<Quiz> findQuizzesByTitleContainingIgnoreCase(String title);
+    List<Quiz> findByTitleContaining(String title);
+
+    List<Quiz> findQuizzesByQuestionsId(Long questionId);
 }

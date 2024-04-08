@@ -1,14 +1,14 @@
 package com.example.quiz.controllers;
 
-import com.example.quiz.models.Question;
-import com.example.quiz.models.QuestionOption;
+import com.example.quiz.exeption.ResourceNotFoundException;
 import com.example.quiz.models.Quiz;
-import com.example.quiz.payload.requests.QuizRequest;
-import com.example.quiz.services.QuizService;
+import com.example.quiz.repositories.QuizRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -16,54 +16,61 @@ import java.util.List;
 @RequestMapping("/quizzes")
 public class QuizController {
 
-    public QuizService quizService;
+    @Autowired
+    QuizRepository quizRepository;
 
-    public QuizController(QuizService quizService) {
-        this.quizService = quizService;
-    }
-
-    // get all quizzes or get quizzes title containing
+    // get all quizzes or get quizzes by containing title
     @GetMapping("")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR')")
-    ResponseEntity<List<Quiz>> getAllQuizzes(@RequestBody QuizRequest quizRequest) {
-        if (quizRequest.getTitleSearch() != null) {
-            return ResponseEntity.ok(quizService.searchQuizzes(quizRequest.getTitleSearch()));
+    public ResponseEntity<List<Quiz>> getAllQuizzes(@RequestBody Quiz quiz) {
+        List<Quiz> quizzes = new ArrayList<Quiz>();
+        if (quiz.getTitle() != null) {
+            quizRepository.findByTitleContaining(quiz.getTitle()).forEach(quizzes::add);
+            return ResponseEntity.ok(quizzes);
         }
-        return ResponseEntity.ok(quizService.getAllQuizzes());
-    }
 
-    // create new quiz
-    @PostMapping("")
-    @PreAuthorize("hasRole('MODERATOR')")
-    ResponseEntity<?> createQuiz(@RequestBody QuizRequest quizRequest) {
-        if (!quizRequest.checkInput()) {
-            return ResponseEntity.badRequest().body("Title, description, startsAt, endsAt, and questions are required.");
-        }
-        return ResponseEntity.ok(quizService.createQuiz(quizRequest.toQuiz()));
+        quizRepository.findAll().forEach(quizzes::add);
+        return ResponseEntity.ok(quizzes);
     }
 
     // get quiz by id
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR')")
-    ResponseEntity<Quiz> getQuizById(@PathVariable Long id) {
-        return ResponseEntity.ok(quizService.getQuizById(id));
+    public ResponseEntity<Quiz> getQuizById(@PathVariable Long id) {
+        Quiz quiz = quizRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Quiz not found with id: " + id));
+
+        return ResponseEntity.ok(quiz);
+    }
+
+    // create new quiz
+    @PostMapping("")
+    @PreAuthorize("hasRole('MODERATOR')")
+    public ResponseEntity<Quiz> createQuiz(@RequestBody Quiz quiz) {
+        Quiz _quiz = quizRepository.save(quiz);
+        return ResponseEntity.ok(_quiz);
     }
 
     // update quiz by id
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('MODERATOR')")
-    ResponseEntity<?> updateQuizById( @PathVariable Long id, @RequestBody QuizRequest quizRequest) {
-        if (!quizRequest.checkInput()) {
-            return ResponseEntity.badRequest().body("Title, description, startsAt, endsAt, and questions are required.");
-        }
-        return ResponseEntity.ok(quizService.updateQuizById(id, quizRequest.toQuiz()));
+    public ResponseEntity<Quiz> updateQuiz(@PathVariable Long id, @RequestBody Quiz quiz) {
+        Quiz _quiz = quizRepository.findById(id).map(q -> {
+            q.setTitle(quiz.getTitle());
+            q.setDescription(quiz.getDescription());
+            q.setStartsAt(quiz.getStartsAt());
+            q.setEndsAt(quiz.getEndsAt());
+            return quizRepository.save(q);
+        }).orElseThrow(() -> new ResourceNotFoundException("Quiz not found with id: " + id));
+
+        return ResponseEntity.ok(_quiz);
     }
 
     // delete quiz by id
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('MODERATOR')")
-    ResponseEntity<?> deleteQuiz(@PathVariable Long id) {
-        quizService.deleteQuiz(id);
-        return ResponseEntity.ok("Quiz deleted successfully.");
+    public ResponseEntity<?> deleteQuiz(@PathVariable Long id) {
+        quizRepository.deleteById(id);
+        return ResponseEntity.ok("Quiz deleted successfully");
     }
 }

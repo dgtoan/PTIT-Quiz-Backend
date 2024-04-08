@@ -12,4 +12,4 @@ docker run --name mysql -d \
 # SELECT user FROM mysql. user;
 
 # add data to mysql
-# sudo docker exec -i mysql mysql -uroot -p1 quizdb < quizdb.sql
+# sudo docker exec -i mysql mysql -uroot -p1 quizdb < quizdb_setup.sql

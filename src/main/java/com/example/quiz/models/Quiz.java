@@ -1,8 +1,11 @@
 package com.example.quiz.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -26,19 +29,26 @@ public class Quiz {
 
     private Timestamp endsAt;
 
-    public Quiz(String title, String description, Timestamp startsAt, Timestamp endsAt) {
-        this.title = title;
-        this.description = description;
-        this.startsAt = startsAt;
-        this.endsAt = endsAt;
-    }
-
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(  name = "quiz_questions",
             joinColumns = @JoinColumn(name = "quiz_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id"))
     private Set<Question> questions = new HashSet<>();
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Take> takes = new HashSet<>();
+    public void addQuestion(Question question) {
+        questions.add(question);
+        question.getQuizzes().add(this);
+    }
+
+    public void removeQuestion(Long questionId) {
+        Question question = this.questions.stream()
+                .filter(q -> q.getId().equals(questionId))
+                .findFirst()
+                .orElse(null);
+
+        if (question != null) {
+            questions.remove(question);
+            question.getQuizzes().remove(this);
+        }
+    }
 }

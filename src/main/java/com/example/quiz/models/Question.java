@@ -1,7 +1,7 @@
 package com.example.quiz.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,16 +17,15 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String question;
 
     private Integer points;
 
-    public Question(String question, Integer points) {
-        this.question = question;
-        this.points = points;
-    }
-
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<QuestionOption> questionOptions = new HashSet<>();
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE },
+            mappedBy = "questions"
+    )
+    @JsonIgnore
+    private Set<Quiz> quizzes = new HashSet<>();
 }

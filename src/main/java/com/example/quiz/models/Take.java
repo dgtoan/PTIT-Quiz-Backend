@@ -1,12 +1,14 @@
 package com.example.quiz.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "TAKE")
@@ -19,14 +21,17 @@ public class Take {
 
     private Integer score;
 
-    @ManyToOne
-    @JoinColumn(name = "quiz_id")
+    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "quiz_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Quiz quiz;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
-
-    @OneToMany(mappedBy = "take", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TakeAnswer> answers = new HashSet<>();
 }
